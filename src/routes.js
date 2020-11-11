@@ -93,7 +93,7 @@ var routes = [
     layout: "/admin"
     
   },{
-    path: `/chat`,
+    path: `/chat/:id`,
     name: "chat",
     icon: "ni ni-single-02 text-yellow",
     component: Chat,

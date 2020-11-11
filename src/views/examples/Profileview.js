@@ -70,6 +70,7 @@ function Profileview() {
 
   const [image, setImage] = useState([]);
   const { id } = useParams();
+  const redirectLink = `/admin/chat/${id}`
 
 
   useEffect(() => {
@@ -147,7 +148,7 @@ function Profileview() {
 
                   <NavLink
                     className="nav-link-icon"
-                    to="/admin/chat"
+                    to={redirectLink}
                     tag={Link}
                   ><Button
                     className="float-right"
