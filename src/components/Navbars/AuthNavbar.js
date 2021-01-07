@@ -1,20 +1,4 @@
-/*!
 
-=========================================================
-* Argon Dashboard React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 import { Link ,useHistory} from "react-router-dom";
 // reactstrap components
@@ -35,9 +19,10 @@ const userName = localStorage.getItem("name");
 const userID = localStorage.getItem("_id");
 const redirectProfileURL = `/admin/user-profile/${userID}`
 const postrouteURL = `/admin/posts/${userID}`
+const mssgURL = `/admin/messages/${userID}`
 
 
-function AdminNavbar(){
+function AuthNavbar(){
   const history = useHistory()
   
     return (
@@ -82,7 +67,8 @@ function AdminNavbar(){
                     <span className="nav-link-inner--text">Dashboard</span>
                   </NavLink>
                 </NavItem>
-                {!userID?<NavItem>
+                {!userID?
+                <NavItem>
                   <NavLink
                     className="nav-link-icon"
                     to="/auth/register"
@@ -91,7 +77,10 @@ function AdminNavbar(){
                     <i className="ni ni-circle-08" />
                     <span className="nav-link-inner--text">Register</span>
                   </NavLink>
-                </NavItem>:
+                </NavItem>
+                
+
+                :
                 <NavItem>
                 <NavLink
                   className="nav-link-icon"
@@ -103,6 +92,21 @@ function AdminNavbar(){
                 </NavLink>
               </NavItem>
                 }
+                {userID?
+                <NavItem>
+                  <NavLink
+                    className="nav-link-icon"
+                    to={mssgURL}
+                    tag={Link}
+                  >
+                    <i className="fas fa-inbox"></i>
+                    <span className="nav-link-inner--text">Messages</span>
+                  </NavLink>
+                </NavItem>
+                
+
+                :
+                null }
                 {!userName ? <NavItem>
                   <NavLink
                     className="nav-link-icon"
@@ -134,6 +138,7 @@ function AdminNavbar(){
                   <NavLink
                     className="nav-link-icon"
                     to={redirectProfileURL}
+                    
                     tag={Link}
                   >
                     <i className="ni ni-single-02" />
@@ -149,4 +154,4 @@ function AdminNavbar(){
   
 }
 
-export default AdminNavbar;
+export default AuthNavbar;

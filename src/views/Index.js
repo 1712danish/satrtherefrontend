@@ -45,6 +45,7 @@ import {
 
 
 import Header from "components/Headers/Header.js";
+import UserHeader from "components/Headers/UserHeader";
 
 
 
@@ -74,37 +75,11 @@ function Index() {
   }, [])
 
 
-  
-
-
-
-
-
-
-
-  // constructor(props){
-  //   super(props);
-  //   this.state = {
-  //     activeNav: 1,
-  //     chartExample1Data: "data1"
-  //   };
-  //   if (window.Chart) {
-  //     parseOptions(Chart, chartOptions());
-  //   }
-  // }
-  // toggleNavs = (e, index) => {
-  //   e.preventDefault();
-  //   this.setState({
-  //     activeNav: index,
-  //     chartExample1Data:
-  //       this.state.chartExample1Data === "data1" ? "data2" : "data1"
-  //   });
-  // };
-
 
   return (
     <>
-      <Header />
+    {/* <Header /> */}
+       <UserHeader /> 
       <Row style={{ margin: "15px" }}>
 
         {data && data[0] ?
@@ -150,7 +125,9 @@ function Index() {
 
                     <i style={{ marginRight: "1rem" }} className="ni ni-briefcase-24" />
 
-                    {object.skills.join(", ")} <br />
+                    
+                    {object.skills?object.skills.join(", "):object.areaOfInterest.join(", ")}
+                    
                     <hr />
                     <Button
                       color="primary"

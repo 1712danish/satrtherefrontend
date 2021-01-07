@@ -19,6 +19,7 @@ import {
   Row,
   Col
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [password, setPass] = useState("")
@@ -143,13 +144,13 @@ function Login() {
         </Card>
         <Row className="mt-3">
           <Col xs="6">
-            <a
+            <Link
               className="text-light"
-              href="#pablo"
-              onClick={e => e.preventDefault()}
+              to="/admin/reset-pass"
+              
             >
               <small>Forgot password?</small>
-            </a>
+            </Link>
           </Col>
           <Col className="text-right" xs="6">
             <a

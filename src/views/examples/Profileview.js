@@ -58,7 +58,7 @@ function Profileview() {
   }
 
   const history = useHistory()
-  const [flag, setFlag] = useState(true)
+  const [flag, setFlag] = useState(false)
   const [aoi, setAOI] = useState("")
   const [skills, setSkills] = useState("")
   const [address, setAdd] = useState("")
@@ -99,8 +99,10 @@ function Profileview() {
     })
       .then(res => res.json())
       .then((result) => {
+        // console.log("post//////////////",result)
 
         setpostData(result);
+
         setFlag(true)
       });
   }
@@ -210,7 +212,7 @@ function Profileview() {
               {postdata && postdata[0] ?
                 postdata.map(object => {
 
-                  console.log("----", object.userId)
+                  // console.log("----", object.userId)
                   return (
                     <Col xs="6">
 
@@ -266,7 +268,7 @@ function Profileview() {
                 }
 
 
-                ) : <div><h3>Sorry no post to show</h3></div>
+                ) : <div style={{marginTop:"100px"}}><h2>Sorry no post to show :(</h2></div>
 
               }
             </Row>

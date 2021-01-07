@@ -25,6 +25,10 @@ import Icons from "views/examples/Icons.js";
 import Profileview from "views/examples/Profileview.js";
 import Post from "views/examples/Posts"
 import Chat from "views/examples/chat"
+import ResetPass from "views/examples/resetpass"
+import NewPass from "views/examples/newpass"
+import ChatUI from "views/examples/messages"
+
 
 
 
@@ -97,6 +101,30 @@ var routes = [
     name: "chat",
     icon: "ni ni-single-02 text-yellow",
     component: Chat,
+    layout: "/admin"
+    
+  },
+  {
+    path: "/reset-pass",
+    name: "resetpass",
+    icon: "ni ni-single-02 text-yellow",
+    component: ResetPass,
+    layout: "/admin"
+    
+  },
+  {
+    path: `/new-pass/:token`,
+    name: "newpass",
+    icon: "ni ni-single-02 text-yellow",
+    component: NewPass,
+    layout: "/admin"
+    
+  },
+  {
+    path: `/messages/:id`,
+    name: "messages",
+    icon: "ni ni-single-02 text-yellow",
+    component: ChatUI,
     layout: "/admin"
     
   }
