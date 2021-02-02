@@ -33,7 +33,7 @@ function AuthNavbar(){
         >
           <Container className="px-4">
             <NavbarBrand to="/" tag={Link}>
-              <img alt="..." src={require("assets/img/brand/argon-react-white.png")} />
+              <h2 style={{color:"white",fontFamily:"Pacifico"}}>Starthere</h2>
             </NavbarBrand>
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />

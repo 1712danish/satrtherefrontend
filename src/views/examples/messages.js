@@ -1,5 +1,5 @@
-import React, {useState,useEffect } from "react";
-import { useHistory, useParams} from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom"
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
@@ -21,7 +21,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: '5px 50px',
-        
+
         // padding: theme.spacing(3, 2),
     },
     flex: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         witdth: '40%',
         minHeight: '300px',
         padding: '15px',
-        marginTop:'0px'
+        marginTop: '0px'
 
     },
     chatWindow: {
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         witdth: '15%',
-       
+
 
     }
 }));
@@ -57,140 +57,151 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatUI() {
     const classes = useStyles();
-    const [textValue,changeValue] =  useState('')
-    const [data,setData] = useState()
-    const [messages,setMessages] =  useState()
+    const [textValue, changeValue] = useState('')
+    const [data, setData] = useState()
+    const [messages, setMessages] = useState()
     const { id } = useParams();
     // const [consultantID,setID] =  useState()
-    const [recieveId,setID] = useState("")
+    const [recieveId, setID] = useState("")
     // const [text, setText] = useState("");
 
+    
 
     useEffect(() => {
-    
-        fetch(`/mssginfo?id=${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("jwt"),
-          }
-        })
-          .then(res => res.json())
-          .then((result) => {
-            setData(result);
-            // console.log(result)
-          });
-        // console.log(userName, email)
-    
-      }, [])
 
-    
+
+        fetch(`/mssginfo?id=${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("jwt"),
+            }
+        })
+            .then(res => res.json())
+            .then((result) => {
+                setData(result);
+                console.log("-------------",result)
+            });
+        // console.log(userName, email)
+
+    }, [])
+
+
 
 
     return (
         <>
-        <UserHeader />
-        <div className={classes.root}>
+            <UserHeader />
+            <div className={classes.root}>
 
-            <Paper>
-                <Typography variant="h5" component="h3" style={{textAlign:"center",padding:"5px"}} >
-                    Chat App
+                <Paper>
+                    <Typography variant="h5" component="h3" style={{ textAlign: "center", padding: "5px" }} >
+                        Chat App
                 </Typography>
-                <hr />
-                <div className={classes.flex}>
-                    <div className={classes.topicsWindow}>
-                        <List>
-                            { data&&data[0]?
-                                data.map(channel => {
+                    <hr />
+                    <div className={classes.flex}>
+                        <div className={classes.topicsWindow}>
+                            <List>
+                                {data && data[0] ?
+                                    data.map(channel => {
+                                        return (
+
+                                            <ListItem key={channel} button
+                                                onClick={() => {
+                                                    console.log("????????????????",channel._id)
+                                                    setID(channel._id)
+                                                    fetch(`/messages?id=${id}&to=${channel._id}`, {
+                                                        headers: {
+                                                            "Content-Type": "application/json",
+                                                            Authorization: "Bearer " + localStorage.getItem("jwt"),
+                                                        }
+                                                    })
+                                                        .then(res => res.json())
+                                                        .then((result) => {
+                                                            setMessages(result);
+                                                              console.log(result)
+                                                        });
+                                                    // console.log(userName, email)
+                                                    changeValue("")
+                                                    
+                                                    // getMssgInfo()
+
+
+                                                }}
+                                            >
+                                                <ListItemText primary={channel.name} />
+                                            </ListItem>
+                                        )
+                                    }) : null
+                                }
+
+                            </List>
+                        </div>
+                        <div className={classes.chatWindow} >
+                            {messages && messages[0] ?
+                                messages.map((message, i) => {
                                     return (
-                                        
-                                        <ListItem key={channel} button  
-                                            onClick={()=>{
-                                                setID(channel._id)
-                                                fetch(`/messages?id=${id}&to=${channel._id}`,{
-                                                    headers: {
-                                                      "Content-Type": "application/json",
-                                                      Authorization: "Bearer " + localStorage.getItem("jwt"),
-                                                    }
-                                                  })
-                                                    .then(res => res.json())
-                                                    .then((result) => {
-                                                      setMessages(result);
-                                                    //   console.log(result)
-                                                    });
-                                                  // console.log(userName, email)
-                                              
-                                                
-                                            }}
-                                        >
-                                            <ListItemText primary={channel.name} />
-                                        </ListItem>
+                                        <div className={classes.flex} key={i}>
+                                            {/* {
+                                                data.map(element=>{
+                                                    if
+
+                                                })
+                                            } */}
+                                            <Chip label={message.to} />
+                                            <Typography variant='p'>
+                                                {message.message}
+                                            </Typography>
+                                        </div>
+
+
                                     )
-                                }):null
+                                })
+                                : null
+                            }
+                        </div>
+
+                    </div>
+                    <div className={classes.flex}>
+                        <div className={classes.chatBox}>
+                            <TextField label="send a chat" color="primary" value={textValue}
+                                onChange={(e) => { changeValue(e.target.value) }} />
+                        </div>
+
+
+
+                        <Button variant="contained" color="primary" style={{ witdh: "700px" }}
+                            onClick={() => {
+                                fetch('/chat', {
+                                    method: "post",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        to: recieveId,
+
+                                        from: localStorage.getItem("_id"),
+                                        message: textValue
+
+                                    })
+
+                                }).then((res) =>
+                                    res.json()).then((data) => {
+                                    })
+                                changeValue("")
+
+
                             }
 
-                        </List>
-                    </div>
-                    <div className={classes.chatWindow}>
-                        {messages&&messages[0]?
-                            messages.map((message, i) => {
-                                return (
-                                    <div className={classes.flex} key={i}>
-                                        <Chip label={message.to} />
-                                        <Typography variant= 'p'>
-                                            {message.message}
-                                        </Typography>
-                                    </div>
 
+                            }
 
-                                )
-                            })
-                            :null
-                        }
-                    </div>
-
-                </div>
-                <div className={classes.flex}>
-                    <div className = {classes.chatBox}>
-                        <TextField  label="send a chat" color="primary" value={textValue} 
-                            onChange={(e) => { changeValue(e.target.value) }} />
-                    </div>
-                   
-
-
-                    <Button variant="contained" color="primary" style={{witdh:"700px"}}
-                    onClick={() => {
-                        fetch('/chat', {
-                            method: "post",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                to: recieveId,
-                                from: localStorage.getItem("_id"),
-                                message: textValue
-
-                            })
-
-                        }).then((res) =>
-                            res.json()).then((data) => {
-                                // NotificationManager.info(data.message);
-                            })
-
-                            // mssgArr.push(mssg)
-                            changeValue("")
-
-                    }
-
-                    
-                    }
-
-                    >
-                        Send
+                        >
+                            Send
                     </Button>
-                </div>
-            </ Paper>
-        </div>
+                    </div>
+                </ Paper>
+            </div>
 
-    </>
+        </>
     )
 }
